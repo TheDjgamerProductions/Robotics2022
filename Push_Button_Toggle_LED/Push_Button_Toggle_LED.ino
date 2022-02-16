@@ -28,5 +28,5 @@ void loop() {
     	digitalWrite(13, HIGH);
     	break;
   }
-  delay(100);
+  delay(25);
 }
