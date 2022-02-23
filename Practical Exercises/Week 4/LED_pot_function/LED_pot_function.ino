@@ -12,15 +12,15 @@ void setup()
 }
 
 void loop() {
-	potReadAndAvrage();
+  potReadAndAvrage();
     Serial.println(output);
-	upateLED(output);
+  upateLED(output);
 
 
 }
 
 int potReadAndAvrage() {
-  output = (analogRead(A0) + analogRead(A1))/2;
+  output = map((analogRead(A0) + analogRead(A1))/2, 0, 1023, 0, 255);
   return output;
 }
 
@@ -28,6 +28,3 @@ int potReadAndAvrage() {
 void upateLED(int x) {
  analogWrite(6, x);
 }
-
-
-
