@@ -1,25 +1,28 @@
 int PotPins[] = {A0,A1,A2,A3,A4};
 int PinsSize = sizeof(PotPins) / sizeof(int);
-int PotReadout[] = {};
+int PotReadout[5];
 
 void setup() {
  Serial.begin(9600);
- for (int i = 0; i <= PinsSize; i++)   {
+ Serial.println(PinsSize);
+ for (int i = 0; i < PinsSize; i++)   {
     pinMode(PotPins[i], INPUT);
   }
 }
 
 void loop() {
+  
   readPins();
-    avrage();
+  avrage();
   
 }
 
 
 void readPins() {
     for (int i = 0; i < PinsSize; i++)   {
-    PotReadout[i] = analogRead(PotPins[i]);
-    delay(500);
+      PotReadout[i] = analogRead(PotPins[i]);
+      //Serial.println(PotReadout[i]);
+      delay(50);
   }
 }
 
@@ -31,6 +34,7 @@ int avrage() {
     Serial.print(",");
   }  
   avragePot = avragePot/PinsSize;
-  
+  Serial.print("The avrage is: ");
+  Serial.println(avragePot);
   
 }
