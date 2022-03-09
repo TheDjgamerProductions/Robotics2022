@@ -65,7 +65,7 @@ boolean Read_Button() {
 boolean trigger_checker() {
   int s = 0;
   for (int i = 0; i < 3; i++){ // Adds up all the readouts from the sensors
-    s += readout[i];
+  s += readout[i];
   Serial.println(s);
   }
   if (s >= 2) {
