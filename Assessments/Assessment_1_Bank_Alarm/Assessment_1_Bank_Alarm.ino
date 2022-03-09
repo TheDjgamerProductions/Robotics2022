@@ -20,7 +20,7 @@ void setup() {
           
 void loop() {
 	read_sensors();
-  	digitalWrite(led_pin, trigger_checker());
+  digitalWrite(led_pin, trigger_checker());
   }
 
   
@@ -61,7 +61,7 @@ void read_sensors() {
 
 boolean trigger_checker() {
   int s = 0;
-  for (int i = 0; i < 3; i++){
+  for (int i = 0; i < 3; i++){ // Adds up all the readouts from the sensors
     s += readout[i];
 	Serial.println(s);
   }
@@ -73,4 +73,3 @@ boolean trigger_checker() {
   }
   
 }
-
