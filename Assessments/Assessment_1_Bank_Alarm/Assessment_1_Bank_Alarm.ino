@@ -1,8 +1,8 @@
-int echo_pin = 6;
-int trigger_pin = 3;
-int PIR_pin = 5;
-int button_pin = 4;
-int led_pin = 2;
+#define echo_pin 6
+#define trigger_pin 3
+#define PIR_pin 5
+#define button_pin 4
+#define led_pin 2
 boolean readout[3];
 
 
