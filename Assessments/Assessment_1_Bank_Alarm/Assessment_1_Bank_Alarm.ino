@@ -3,9 +3,6 @@ int trigger_pin = 3;
 int PIR_pin = 5;
 int button_pin = 4;
 int led_pin = 2;
-bool active = false;
-long duration; 
-int distance;
 boolean readout[3];
 
 
@@ -19,12 +16,23 @@ void setup() {
   }
           
 void loop() {
-	read_sensors();
+  read_sensors();
   digitalWrite(led_pin, trigger_checker());
   }
 
   
+
+void read_sensors() {
+  readout[0] = Read_distance();
+  readout[1] = Read_PIR();
+  readout[2] = Read_Button();
+}
+
+
+
 boolean Read_distance() {
+  long duration; 
+  int distance;
   // Clears the trigPin condition
   digitalWrite(trigger_pin, LOW);
   delayMicroseconds(2);
@@ -53,17 +61,12 @@ boolean Read_Button() {
   return(digitalRead(button_pin));
 }
 
-void read_sensors() {
-  readout[0] = Read_distance();
-  readout[1] = Read_PIR();
-  readout[2] = Read_Button();
-}
 
 boolean trigger_checker() {
   int s = 0;
   for (int i = 0; i < 3; i++){ // Adds up all the readouts from the sensors
     s += readout[i];
-	Serial.println(s);
+  Serial.println(s);
   }
   if (s >= 2) {
     return(true);
