@@ -13,12 +13,12 @@ void setup() {
   pinMode(button_pin, INPUT);
   pinMode(led_pin, OUTPUT);
   Serial.begin(9600);
-  }
+}
           
 void loop() {
-  read_sensors();
-  digitalWrite(led_pin, trigger_checker());
-  }
+    read_sensors();
+    digitalWrite(led_pin, trigger_checker());
+}
 
   
 
@@ -65,8 +65,8 @@ boolean Read_Button() {
 boolean trigger_checker() {
   int s = 0;
   for (int i = 0; i < 3; i++){ // Adds up all the readouts from the sensors
-  s += readout[i];
-  Serial.println(s);
+    s += readout[i];
+    Serial.println(s);
   }
   if (s >= 2) {
     return(true);
