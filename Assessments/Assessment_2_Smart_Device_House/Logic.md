@@ -13,3 +13,12 @@
     terminalEnd([End])
     terminalStart --> terminalEnd
 ```
+
+<!--- template
+```mermaid
+  flowchart TD
+    terminalStart([Void name])
+    terminalEnd([End])
+    terminalStart -> terminalEnd
+```
+-->
