@@ -4,8 +4,8 @@
     step1[set trafic light pins to output]
     step2[Set HC-SR04 tigger pin to output]
     step3[Set buzzer pin to output]
-    step4([Set up servo])
-    step5([Set up Motor Driver])
+    step4[Set up servo]
+    step5[Set up Motor Driver]
     step6[set pot pin to input]
     step7[Set line sensor pin to input]
     step8[Set button pin to input]
