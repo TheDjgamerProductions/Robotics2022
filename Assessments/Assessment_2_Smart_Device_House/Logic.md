@@ -20,8 +20,8 @@
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
-    step1([step1])
-    step2([step2])
+    step1[step1]
+    step2[step2]
     terminalStart --> step1 --> step2 --> terminalStart
 ```
 
