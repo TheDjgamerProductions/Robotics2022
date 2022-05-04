@@ -21,12 +21,31 @@
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
-    step1[step1]
+    step1[LEDController]
     step2[step2]
     terminalStart --> step1 --> step2 --> terminalStart
 ```
 
 - - - -
+
+```mermaid
+  flowchart TD
+    terminalStart([Void LEDController])
+    terminalEnd([End])
+    readPot(PotReadout = Read Potentiometer)
+    mapReadout(Map PotReadout Min:0 Max:255)
+    buttonReadout(ButtonReadout = Read Button)
+    bluetoothReadout(BluetoothReadout = Read Bluetooth)
+    setLED(Set LED birghtnes to PotReadout)
+    ifButtonandBluetooth{if buttonReadout or bluetoothReadout}
+    terminalStart --> buttonReadout --> bluetoothReadout --> ifButtonandBluetooth
+    ifButtonandBluetooth --> |True| readPot --> mapReadout --> setLED --> terminalEnd
+    ifButtonandBluetooth --> |False| terminalEnd 
+```
+
+
+
+
 
 
 
@@ -35,6 +54,5 @@
   flowchart TD
     terminalStart([Void name])
     terminalEnd([End])
-    terminalStart -> terminalEnd
 ```
 -->
