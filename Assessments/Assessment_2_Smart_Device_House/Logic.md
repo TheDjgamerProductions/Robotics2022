@@ -2,6 +2,8 @@
 - [Void setup](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-setup)
 - [Void Loop](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-loop)
 - [Void StateHandler](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-statehandler)
+- [Void armedState](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#Void-armedState)
+- [Void DisarmedState](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#Void-disarmedState)
 - [Void LEDController](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-ledcontroller)
 - [Void FanCrontroller](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-fancrontroller)
 
@@ -42,7 +44,7 @@
 
 
 # Void StateHandler
-*Description goes here*
+This function is used to determan what state the system should be in (Armed or Disarmed)
 ```mermaid
   flowchart TD
     terminalStart([Void StateHandler])
@@ -57,9 +59,27 @@
 ```
 
 - - - -
+# Void armedState
+```mermaid
+  flowchart TD
+    terminalStart([Void armedState])
+    terminalEnd([End])
+    led(LEDController)
+    fan(FanCrontroller)
+    terminalStart --> led --> fan --> terminalEnd
+```
+- - - 
+# Void DisarmedState
+```mermaid
+  flowchart TD
+    terminalStart([Void DisarmedState])
+    terminalEnd([End])
+```
+
+- - - 
 
 # Void LEDController
-*Description goes here*
+This function is used to controll the LEDs when the system is in a disarmed state
 ```mermaid
   flowchart TD
     terminalStart([Void LEDController])
