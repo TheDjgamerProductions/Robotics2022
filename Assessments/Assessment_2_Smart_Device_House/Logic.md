@@ -1,4 +1,14 @@
+# Table of contents
+- [Void setup]()
+- [Void Loop]()
+- [Void StateHandler]()
+- [Void StateHandler]()
+- [Void LEDController]()
+- [Void FanCrontroller]()
 
+
+
+# Void setup
 ```mermaid
   flowchart TD
     terminalStart([Void Setup])
@@ -18,33 +28,59 @@
 
 - - - -
 
+
+# Void setup
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
-    step1[LEDController]
-    step2[step2]
-    terminalStart --> step1 --> step2 --> terminalStart
+    step1[StateHandler]
+    terminalStart --> step1 --> terminalStart
 ```
 
 - - - -
 
+
+# Void StateHandler
+```mermaid
+  flowchart TD
+    terminalStart([Void StateHandler])
+    bluetooth{Bluetooth connected}
+    armedState(ArmedState)
+    DisarmedState(DisarmedState)
+    terminalEnd([End])
+    terminalStart --> bluetooth
+    bluetooth --> |True| DisarmedState --> terminalEnd
+    bluetooth --> |False| armedState --> terminalEnd
+
+```
+
+- - - -
+
+# Void LEDController
 ```mermaid
   flowchart TD
     terminalStart([Void LEDController])
     terminalEnd([End])
-    readPot(PotReadout = Read Potentiometer)
-    mapReadout(Map PotReadout Min:0 Max:255)
-    buttonReadout(ButtonReadout = Read Button)
+    LineReadout(LineReadout = Read Line Sensor)
     bluetoothReadout(BluetoothReadout = Read Bluetooth)
-    setLED(Set LED birghtnes to PotReadout)
-    ifButtonandBluetooth{if buttonReadout or bluetoothReadout}
-    terminalStart --> buttonReadout --> bluetoothReadout --> ifButtonandBluetooth
-    ifButtonandBluetooth --> |True| readPot --> mapReadout --> setLED --> terminalEnd
-    ifButtonandBluetooth --> |False| terminalEnd 
+    setLED(Set LED High)
+    LEDoff(Set LED Low)
+    ifButtonandBluetooth{if LineReadout or bluetoothReadout}
+    terminalStart --> LineReadout --> bluetoothReadout --> ifButtonandBluetooth
+    ifButtonandBluetooth --> |True| setLED --> terminalEnd
+    ifButtonandBluetooth --> |False| LEDoff --> terminalEnd 
 ```
 
 
+- -  -
 
+# Void FanCrontroller
+
+```mermaid
+  flowchart TD
+    terminalStart([Void FanCrontroller])
+    terminalEnd([End])
+```
 
 
 
