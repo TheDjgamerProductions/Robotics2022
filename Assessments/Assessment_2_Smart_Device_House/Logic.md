@@ -1,5 +1,5 @@
 # Table of contents
-- [Void setup]()
+- [Void setup](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-setup)
 - [Void Loop]()
 - [Void StateHandler]()
 - [Void StateHandler]()
@@ -29,7 +29,7 @@
 - - - -
 
 
-# Void setup
+# Void loop
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
