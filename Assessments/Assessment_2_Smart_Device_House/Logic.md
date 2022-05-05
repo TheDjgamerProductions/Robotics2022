@@ -7,8 +7,8 @@
 
 
 
-## Void setup
-
+# Void setup
+*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void Setup])
@@ -30,6 +30,7 @@
 
 
 # Void loop
+*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
@@ -41,6 +42,7 @@
 
 
 # Void StateHandler
+*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void StateHandler])
@@ -57,6 +59,7 @@
 - - - -
 
 # Void LEDController
+*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void LEDController])
@@ -75,7 +78,7 @@
 - -  -
 
 # Void FanCrontroller
-
+*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void FanCrontroller])
