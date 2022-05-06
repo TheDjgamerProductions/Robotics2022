@@ -59,21 +59,27 @@ This function is used to determan what state the system should be in (Armed or D
 ```
 
 - - - -
-# Void armedState
+# Void DisarmedState
 ```mermaid
   flowchart TD
-    terminalStart([Void armedState])
+    terminalStart([Void DisarmedState])
     terminalEnd([End])
     led(LEDController)
     fan(FanCrontroller)
     terminalStart --> led --> fan --> terminalEnd
 ```
 - - - 
-# Void DisarmedState
+# Void armedState
 ```mermaid
   flowchart TD
-    terminalStart([Void DisarmedState])
+    terminalStart([Void armedState])
     terminalEnd([End])
+    if{readDistance < 10cm}
+    alarm(Write high to Buzzer)
+    noAlarm(Write low to Buzzer)
+    terminalStart --> if
+    if --> |True| alarm --> terminalEnd
+    if --> |False| noAlarm --> terminalEnd
 ```
 
 - - - 
@@ -102,6 +108,20 @@ This function is used to controll the LEDs when the system is in a disarmed stat
 ```mermaid
   flowchart TD
     terminalStart([Void FanCrontroller])
+    terminalEnd([End])
+    readPot(PotReadout = readPot)
+    mapPot(MappedPotReadout = map PotReadout min:0 max:255)
+    fan(AnalogWirte Fan - MappedPotReadout)
+    terminalStart --> readPot --> mapPot --> fan --> terminalEnd
+```
+
+- - -
+
+# Void readDistance
+
+```mermaid
+  flowchart TD
+    terminalStart([Void readDistance])
     terminalEnd([End])
 ```
 
