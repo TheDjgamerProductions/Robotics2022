@@ -81,6 +81,8 @@ This function is used to call the other functions that are used to implement use
     if --> |True| alarm --> terminalEnd
     if --> |False| noAlarm --> terminalEnd
 ```
+See readDistacne function [Here](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#int-readDistance)
+
 
 - - - 
 
