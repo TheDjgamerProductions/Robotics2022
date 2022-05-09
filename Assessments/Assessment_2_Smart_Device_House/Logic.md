@@ -6,12 +6,11 @@
 - [Void armedState](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#Void-armedState)
 - [Void LEDController](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-ledcontroller)
 - [Void FanCrontroller](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-fancrontroller)
-- [Void readDistance](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#void-readDistance)
+- [Int readDistance](https://github.com/TheDjgamerProductions/Robotics2022/blob/main/Assessments/Assessment_2_Smart_Device_House/Logic.md#int-readDistance)
 
 - - -
 
 # Void setup
-*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void Setup])
@@ -33,7 +32,6 @@
 
 
 # Void loop
-*Description goes here*
 ```mermaid
   flowchart TD
     terminalStart([Void Loop])
@@ -61,6 +59,7 @@ This function is used to determan what state the system should be in (Armed or D
 
 - - - -
 # Void DisarmedState
+This function is used to call the other functions that are used to implement user control when the system is in a disarmed state
 ```mermaid
   flowchart TD
     terminalStart([Void DisarmedState])
@@ -118,12 +117,21 @@ This function is used to controll the LEDs when the system is in a disarmed stat
 
 - - -
 
-# Void readDistance
+# Int readDistance
 
 ```mermaid
   flowchart TD
-    terminalStart([Void readDistance])
+    terminalStart([int readDistance])
     terminalEnd([End])
+    trigLow(Write Low to HC-SR04 Tigger pin)
+    delay1(Wait for 2 Microseconds)
+    TrigHigh(Write High to HC-SR04 Tigger pin)
+    delay2(Wait for 10 Microseconds)
+    trigLow2(Write Low to HC-SR04 Tigger pin)
+    duration(long duration = pulseIn HC-SR04 Tigger pin)
+    distacne(int distacne = duration * 0.034 / 2)
+    return(return distacne)
+    terminalStart --> trigLow --> delay1 --> TrigHigh --> delay2 --> trigLow2 --> duration --> distacne --> return --> terminalEnd
 ```
 
 
