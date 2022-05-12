@@ -74,10 +74,11 @@ This function is used to call the other functions that are used to implement use
   flowchart TD
     terminalStart([Void armedState])
     terminalEnd([End])
+    off(Turn Everything off)
     if{readDistance < 10cm}
     alarm(Write high to Buzzer)
     noAlarm(Write low to Buzzer)
-    terminalStart --> if
+    terminalStart --> off --> if
     if --> |True| alarm --> terminalEnd
     if --> |False| noAlarm --> terminalEnd
 ```
