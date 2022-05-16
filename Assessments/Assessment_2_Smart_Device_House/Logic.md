@@ -70,6 +70,9 @@ This function is used to call the other functions that are used to implement use
 ```
 - - - 
 # Void armedState
+This function is used when the system is armed due to the user not being conected.
+
+When someone is within distance to the sonar it sounds the alarm.
 ```mermaid
   flowchart TD
     terminalStart([Void armedState])
