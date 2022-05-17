@@ -70,7 +70,7 @@ This function is used to call the other functions that are used to implement use
 ```
 - - - 
 # Void armedState
-This function is used when the system is armed due to the user not being conected.
+This function is used when the system is armed due to the user not being conected to bluetooth
 
 When someone is within distance to the sonar it sounds the alarm.
 ```mermaid
@@ -91,7 +91,9 @@ See readDistacne function [Here](https://github.com/TheDjgamerProductions/Roboti
 - - - 
 
 # Void LEDController
-This function is used to controll the LEDs when the system is in a disarmed state
+This function is used to control the LEDs when the system is in a disarmed state.
+
+If the user uses bluetooth or the line reader reads true it turns the LED on
 ```mermaid
   flowchart TD
     terminalStart([Void LEDController])
@@ -110,7 +112,9 @@ This function is used to controll the LEDs when the system is in a disarmed stat
 - -  -
 
 # Void FanCrontroller
-*Description goes here*
+This function is used to control the Fan when the system is in a disarmed state.
+
+When the user turns the potentiometer it makes the fan speed up or slow down.
 ```mermaid
   flowchart TD
     terminalStart([Void FanCrontroller])
