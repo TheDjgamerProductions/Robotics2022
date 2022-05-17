@@ -78,10 +78,11 @@ When someone is within distance to the sonar it sounds the alarm.
     terminalStart([Void armedState])
     terminalEnd([End])
     off(Turn Everything off)
+    lock(Turn servo)
     if{readDistance < 10cm}
     alarm(Write high to Buzzer)
     noAlarm(Write low to Buzzer)
-    terminalStart --> off --> if
+    terminalStart --> off --> lock --> if
     if --> |True| alarm --> terminalEnd
     if --> |False| noAlarm --> terminalEnd
 ```
