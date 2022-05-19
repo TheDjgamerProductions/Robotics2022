@@ -44,6 +44,8 @@
 
 # Void StateHandler
 This function is used to determan what state the system should be in (Armed or Disarmed)
+
+If the user is connected to bluetooth the system goes into a disarmed state, if the user is not connected (e.g they are not home) the system goes into an armed state
 ```mermaid
   flowchart TD
     terminalStart([Void StateHandler])
@@ -72,7 +74,7 @@ This function is used to call the other functions that are used to implement use
 # Void armedState
 This function is used when the system is armed due to the user not being conected to bluetooth
 
-When someone is within distance to the sonar it sounds the alarm.
+We call to the read distacne function and see if the returned data is within the threshold we have set. If it is we sound the alarm.
 ```mermaid
   flowchart TD
     terminalStart([Void armedState])
@@ -116,6 +118,8 @@ If the user uses bluetooth or the line reader reads true it turns the LED on
 This function is used to control the Fan when the system is in a disarmed state.
 
 When the user turns the potentiometer it makes the fan speed up or slow down.
+
+It also maps the pot readout to math the min and max of the fan
 ```mermaid
   flowchart TD
     terminalStart([Void FanCrontroller])
@@ -129,6 +133,7 @@ When the user turns the potentiometer it makes the fan speed up or slow down.
 - - -
 
 # Int readDistance
+This function is used for reading the distance that the sonar reads and returns the distance read.
 
 ```mermaid
   flowchart TD
