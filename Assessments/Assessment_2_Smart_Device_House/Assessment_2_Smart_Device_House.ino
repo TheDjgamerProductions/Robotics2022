@@ -1,26 +1,24 @@
-//https://forum.arduino.cc/t/multiple-spi-devices-on-mega/629412/4
-
-
-// SD Card Module
+//Import Libs
 #include <SPI.h>
 #include <SD.h>
-#include "Adafruit_BLE_UART.h"
+#include <Servo.h>
+#include "RTClib.h"
+
+
+Servo servo; //Delcare servo
 
 
 
 // Real Time Clock (RTC)
-#include "RTClib.h"
 RTC_Millis rtc;     // Software Real Time Clock (RTC)
 DateTime rightNow;  // used to store the current time.
 
-#define ServoPin  22
+//Pins
+#define ServoPin  24
 #define mDrive1  7
 #define mDrive2  6
 #define potPin  A8
 #define sdSelect  41
-#define ADAFRUITBLE_REQ 10
-#define ADAFRUITBLE_RDY  2
-#define ADAFRUITBLE_RST  9
 #define redLED  31
 #define YellLED  30
 #define greenLED 32
@@ -30,73 +28,25 @@ DateTime rightNow;  // used to store the current time.
 #define Trig  5
 #define buzzer  40
 
-Adafruit_BLE_UART uart = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RDY, ADAFRUITBLE_RST);
-
-
-
-
-void aciCallback(aci_evt_opcode_t event)
-{
-  Serial.println("Trying to start bluetooth");
-  switch(event)
-  {
-    case ACI_EVT_DEVICE_STARTED:
-      Serial.println(F("Advertising started"));
-      break;
-    case ACI_EVT_CONNECTED:
-      Serial.println(F("Connected!"));
-      break;
-    case ACI_EVT_DISCONNECTED:
-      Serial.println(F("Disconnected or advertising timed out"));
-      break;
-    default:
-      break;
-  }
-}
-
-
-
-void rxCallback(uint8_t *buffer, uint8_t len)
-{
-  Serial.print(F("Received "));
-  Serial.print(len);
-  Serial.print(F(" bytes: "));
-  for(int i=0; i<len; i++)
-   Serial.print((char)buffer[i]); 
-
-  Serial.print(F(" ["));
-
-  for(int i=0; i<len; i++)
-  {
-    Serial.print(" 0x"); Serial.print((char)buffer[i], HEX); 
-  }
-  Serial.println(F(" ]"));
-
-  /* Echo the same data back! */
-  uart.write(buffer, len);
-}
-
-
-
 
 
 void setup() {
+  //Setup pins
+  pinMode(mDrive1, OUTPUT);
+  pinMode(mDrive2, OUTPUT);
+  pinMode(redLED, OUTPUT);
+  pinMode(YellLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  pinMode(line, INPUT);
+  pinMode(button, INPUT);
+  pinMode(potPin, INPUT);
+  servo.attach(ServoPin);       //Set up servo
   Serial.begin(9600);           // Open serial communications and wait for port to open:
   while (!Serial) {
     delay(1);                   // wait for serial port to connect. Needed for native USB port only
   }
-  pinMode(53, OUTPUT);
-  pinMode(50, INPUT);
-  pinMode(51, OUTPUT); 
- digitalWrite(ADAFRUITBLE_REQ, HIGH);
- digitalWrite(sdSelect, LOW);
- uart.setRXcallback(rxCallback);
- uart.setACIcallback(aciCallback);
- uart.setDeviceName("Dylan"); /* 7 characters max! */
- uart.begin();
- digitalWrite(ADAFRUITBLE_REQ, LOW);
- digitalWrite(sdSelect, HIGH);
-// SD Card initialisation
+
   Serial.print("Initializing SD card...");
   if (!SD.begin(sdSelect)) {
     Serial.println("initialization failed!");
@@ -105,12 +55,11 @@ void setup() {
 // Real Time Clock (RTC)
   rtc.begin(DateTime(F(__DATE__), F(__TIME__)));
   Serial.println("initialization done.");
-  logEvent("System Initialisation...");
-
+logEvent("System Initialisation...");
 }
 
 void loop() {
-  uart.pollACI();
+
 }
 
 
