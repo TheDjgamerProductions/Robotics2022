@@ -3,6 +3,16 @@
 #include <SD.h>
 #include <Servo.h>
 #include "RTClib.h"
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
+static const int RXPin = 10, TXPin = 11;
+static const uint32_t GPSBaud = 9600;
+
+// The TinyGPS++ object
+TinyGPSPlus gps;
+// The serial connection to the GPS device
+SoftwareSerial ss(RXPin, TXPin);
+
 
 
 Servo servo; //Delcare servo
@@ -28,6 +38,8 @@ DateTime rightNow;  // used to store the current time.
 #define Trig  5
 #define buzzer  40
 
+//Defines
+#define TrigDistance 100
 
 
 void setup() {
@@ -41,12 +53,14 @@ void setup() {
   pinMode(line, INPUT);
   pinMode(button, INPUT);
   pinMode(potPin, INPUT);
+  pinMode(Trig, OUTPUT);
+  pinMode(echo, INPUT);
   servo.attach(ServoPin);       //Set up servo
   Serial.begin(9600);           // Open serial communications and wait for port to open:
   while (!Serial) {
     delay(1);                   // wait for serial port to connect. Needed for native USB port only
   }
-
+  ss.begin(GPSBaud);
   Serial.print("Initializing SD card...");
   if (!SD.begin(sdSelect)) {
     Serial.println("initialization failed!");
@@ -111,4 +125,26 @@ void logEvent(String dataToLog) {
   Serial.print(rightNow.second(), DEC);
   Serial.print(",");
   Serial.println(dataToLog);
+}
+
+boolean Read_distance() {
+  long duration; 
+  int distance;
+  // Clears the trigPin condition
+  digitalWrite(Trig, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(Trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(Trig, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echo, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  if (distance <= TrigDistance) {
+    return(true);
+  }
+  else {
+    return(false);
+  }
 }
