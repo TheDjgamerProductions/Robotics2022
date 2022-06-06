@@ -5,6 +5,7 @@
 #include "RTClib.h"
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
+#include <L298N.h>
 
 
 
@@ -23,7 +24,6 @@ DateTime rightNow;  // used to store the current time.
 #define ServoPin  24
 #define mDrive1  7
 #define mDrive2  6
-#define potPin  "A8"
 #define sdSelect  41
 #define redLED  31
 #define YellLED  30
@@ -53,6 +53,8 @@ static const uint32_t GPSBaud = 9600;
 TinyGPSPlus gps;
 // The serial connection to the GPS device
 SoftwareSerial ss(RXPin, TXPin);
+L298N motor(mDrive1, mDrive2);
+
 
 void setup() {
   //Setup pins
@@ -64,7 +66,7 @@ void setup() {
   pinMode(buzzer, OUTPUT);
   pinMode(line, INPUT);
   pinMode(button, INPUT);
-  pinMode(potPin, INPUT);
+  pinMode(A0, INPUT);
   pinMode(Trig, OUTPUT);
   pinMode(echo, INPUT);
   servo.attach(ServoPin);       //Set up servo
@@ -90,8 +92,10 @@ void setup() {
 void loop() {
   Serial.println("In main loop");
   stateHandeler();
-  getGPSInfo();
-   delay(50);
+  motor.setSpeed(90);
+  motor.forward();
+  //getGPSInfo();
+  delay(50);
 }
 
 
@@ -183,7 +187,12 @@ boolean Read_distance() {
    @return null
 */
 void stateHandeler() {
-
+  if (1 == 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
+    disarmedState();
+  }
+  else {
+    armedState();
+  }
 
 
 }
@@ -194,9 +203,8 @@ void stateHandeler() {
    @return null
 */
 void disarmedState() {
-
-
-
+  ledController();
+  fanController();
 }
 
 /*
@@ -216,7 +224,13 @@ void armedState() {
    @return null
 */
 void ledController() {
-
+  int lineReadout = digitalRead(line);
+  if (!lineReadout) {
+    digitalWrite(redLED, HIGH);
+  }
+  else {
+    digitalWrite(redLED, LOW);
+  }
 
 }
 
@@ -226,8 +240,11 @@ void ledController() {
    @return null
 */
 void fanController() {
-
-
+  int potRead = analogRead(A0);
+  int fanSpeed = map(potRead, 0, 1010, 0, 900);
+  Serial.println(fanSpeed);
+  motor.setSpeed(0);
+  motor.forward();
 }
 
 void getGPSInfo()
