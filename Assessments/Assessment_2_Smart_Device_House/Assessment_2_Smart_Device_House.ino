@@ -44,9 +44,9 @@ const char *gpsStream =
   "$GPRMC,045200.000,A,3014.3820,N,09748.9514,W,36.88,65.02,030913,,,A*77\r\n"
   "$GPGGA,045201.000,3014.3864,N,09748.9411,W,1,10,1.2,200.8,M,-22.5,M,,0000*6C\r\n"
   "$GPRMC,045251.000,A,3014.4275,N,09749.0626,W,0.51,217.94,030913,,,A*7D\r\n"
-  "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n";\
-  static const int RXPin = 10, TXPin = 11;
-  static const uint32_t GPSBaud = 9600;
+  "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n"; \
+static const int RXPin = 10, TXPin = 11;
+static const uint32_t GPSBaud = 9600;
 
 
 // The TinyGPS++ object
@@ -81,26 +81,26 @@ void setup() {
   while (*gpsStream)
     if (gps.encode(*gpsStream++))
       getGPSInfo();
-// Real Time Clock (RTC)
+  // Real Time Clock (RTC)
   rtc.begin(DateTime(F(__DATE__), F(__TIME__)));
   Serial.println("initialization done.");
-logEvent("System Initialisation...");
+  logEvent("System Initialisation...");
 }
 
 void loop() {
   Serial.println("In main loop");
   stateHandeler();
   getGPSInfo();
-  delay(50);
+   delay(50);
 }
 
 
 
 /*
- * 
- * @pram string (What data to log)
- * @return null
- */
+
+   @pram string (What data to log)
+   @return null
+*/
 
 void logEvent(String dataToLog) {
   /*
@@ -151,12 +151,12 @@ void logEvent(String dataToLog) {
 }
 
 /*
- * 
- * @pram null
- * @return boolean
- */
+
+   @pram null
+   @return boolean
+*/
 boolean Read_distance() {
-  long duration; 
+  long duration;
   int distance;
   // Clears the trigPin condition
   digitalWrite(Trig, LOW);
@@ -170,69 +170,69 @@ boolean Read_distance() {
   // Calculating the distance
   distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   if (distance <= TrigDistance) {
-    return(true);
+    return (true);
   }
   else {
-    return(false);
+    return (false);
   }
 }
 
 /*
- * This function is used to make the house in an armed state if the GPS is outside the house
- * @pram null
- * @return null
- */
-void stateHandeler(){
+   This function is used to make the house in an armed state if the GPS is outside the house
+   @pram null
+   @return null
+*/
+void stateHandeler() {
 
 
 
 }
 
 /*
- * 
- * @pram null
- * @return null
- */
-void disarmedState(){
+
+   @pram null
+   @return null
+*/
+void disarmedState() {
 
 
 
 }
 
 /*
- * 
- * @pram null
- * @return null
- */
-void armedState(){
+
+   @pram null
+   @return null
+*/
+void armedState() {
 
 
 
 }
 
 /*
- * 
- * @pram null
- * @return null
- */
-void ledController(){
+
+   @pram null
+   @return null
+*/
+void ledController() {
 
 
 }
 
 /*
- * 
- * @pram null
- * @return null
- */
-void fanController(){
 
-  
+   @pram null
+   @return null
+*/
+void fanController() {
+
+
 }
 
 void getGPSInfo()
 {
-  Serial.print(F("Location: ")); 
+  Serial.print(F("Location: "));
   if (gps.location.isValid())
   {
     Serial.print(gps.location.lat(), 6);
