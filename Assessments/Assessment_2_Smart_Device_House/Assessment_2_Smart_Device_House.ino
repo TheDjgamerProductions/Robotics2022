@@ -25,17 +25,18 @@ DateTime rightNow;  // used to store the current time.
 #define mDrive1  7
 #define mDrive2  6
 #define sdSelect  41
-#define redLED  31
-#define YellLED  30
+#define redLED  8
+#define YellLED  9
 #define greenLED 32
 #define line  49
 #define button  3
-#define echo  4
-#define Trig  5
+#define echo  12
+#define Trig  13
 #define buzzer  40
 
+
 //Defines
-#define TrigDistance 100
+#define TrigDistance 10
 
 //Vars
 const char *gpsStream =
@@ -47,6 +48,8 @@ const char *gpsStream =
   "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n"; \
 static const int RXPin = 10, TXPin = 11;
 static const uint32_t GPSBaud = 9600;
+boolean fanState = false;
+int x = 1;
 
 
 // The TinyGPS++ object
@@ -90,10 +93,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("In main loop");
   stateHandeler();
-  motor.setSpeed(90);
-  motor.forward();
   //getGPSInfo();
   delay(50);
 }
@@ -117,7 +117,7 @@ void logEvent(String dataToLog) {
   File logFile = SD.open("events.csv", FILE_WRITE);
   if (!logFile) {
     Serial.print("Couldn't create log file");
-    abort();
+    abort;
   }
 
   // Log the event with the date, time and data
@@ -173,6 +173,7 @@ boolean Read_distance() {
   duration = pulseIn(echo, HIGH);
   // Calculating the distance
   distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  Serial.println(distance);
   if (distance <= TrigDistance) {
     return (true);
   }
@@ -203,6 +204,7 @@ void stateHandeler() {
    @return null
 */
 void disarmedState() {
+  LockController(false);
   ledController();
   fanController();
 }
@@ -213,22 +215,17 @@ void disarmedState() {
    @return null
 */
 void armedState() {
-
-
-
-}
-
-/*
-
-   @pram null
-   @return null
-*/
-void ledController() {
-  int lineReadout = digitalRead(line);
-  if (!lineReadout) {
+  LockController(true);
+  if (Read_distance()) {
+    tone(buzzer, 800);
     digitalWrite(redLED, HIGH);
+    delay(25);
+    tone(buzzer, 700);
+    digitalWrite(redLED, LOW);
+    delay(25);
   }
   else {
+    noTone(buzzer);
     digitalWrite(redLED, LOW);
   }
 
@@ -239,16 +236,45 @@ void ledController() {
    @pram null
    @return null
 */
-void fanController() {
+void ledController() {
   int potRead = analogRead(A0);
-  int fanSpeed = map(potRead, 0, 1010, 0, 900);
-  Serial.println(fanSpeed);
-  motor.setSpeed(0);
-  motor.forward();
+  int ledLevel = map(potRead, 0, 1023, 0, 255);
+  Serial.println(ledLevel);
+  int lineReadout = digitalRead(line);
+  if (!lineReadout) {
+    analogWrite(YellLED, ledLevel);
+  }
+  else {
+    digitalWrite(YellLED, LOW);
+  }
+
 }
 
-void getGPSInfo()
-{
+/*
+
+   @pram null
+   @return null
+*/
+void fanController() {
+  if (fanState) {
+    while (digitalRead(button) == 0) {
+      Serial.println("Button");
+      fanState = false;
+      logEvent("Fan Off");
+
+    }
+    motor.forward();
+  }
+  else {
+    while (digitalRead(button) == 0) {
+      fanState = true;
+      logEvent("Fan on");
+    }
+    motor.stop();
+  }
+}
+
+void getGPSInfo() {
   Serial.print(F("Location: "));
   if (gps.location.isValid())
   {
@@ -296,4 +322,16 @@ void getGPSInfo()
   }
 
   Serial.println();
+}
+
+void LockController(boolean lock) {
+  if (lock) {
+    servo.write(90);
+    logEvent("Locked");
+  }
+  else {
+    servo.write(0);
+    logEvent(String(x));
+    x += 1;
+  }
 }
