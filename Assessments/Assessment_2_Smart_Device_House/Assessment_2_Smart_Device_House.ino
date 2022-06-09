@@ -235,10 +235,10 @@ void disarmedState() {
 void armedState() {
   LockController(true);
   if (Read_distance()) {
-    tone(buzzer, 800);
+    tone(buzzer, 1000);
     digitalWrite(redLED, HIGH);
     delay(25);
-    tone(buzzer, 700);
+    tone(buzzer, 2000);
     digitalWrite(redLED, LOW);
     delay(25);
     logEvent("Alarm Went off");
@@ -351,7 +351,6 @@ void LockController(boolean lock) {
   }
   else {
     servo.write(0);
-    logEvent(String(x));
-    x += 1;
+    logEvent("Unlocked");
   }
 }
