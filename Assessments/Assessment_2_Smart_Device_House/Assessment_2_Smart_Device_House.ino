@@ -50,6 +50,9 @@ static const int RXPin = 10, TXPin = 11;
 static const uint32_t GPSBaud = 9600;
 boolean fanState = false;
 int x = 1;
+int PrevEventID = 1;
+String PrevEvent1;
+String PrevEvent2;
 
 
 // The TinyGPS++ object
@@ -111,47 +114,62 @@ void logEvent(String dataToLog) {
      Log entries to a file on an SD card.
   */
   // Get the updated/current time
-  DateTime rightNow = rtc.now();
-
-  // Open the log file
-  File logFile = SD.open("events.csv", FILE_WRITE);
-  if (!logFile) {
-    Serial.print("Couldn't create log file");
-    abort;
+  if (PrevEvent1 == dataToLog || PrevEvent2 == dataToLog) {
+    Serial.println("Dupe Data");
   }
+  else {
+    DateTime rightNow = rtc.now();
 
-  // Log the event with the date, time and data
-  logFile.print(rightNow.year(), DEC);
-  logFile.print(",");
-  logFile.print(rightNow.month(), DEC);
-  logFile.print(",");
-  logFile.print(rightNow.day(), DEC);
-  logFile.print(",");
-  logFile.print(rightNow.hour(), DEC);
-  logFile.print(",");
-  logFile.print(rightNow.minute(), DEC);
-  logFile.print(",");
-  logFile.print(rightNow.second(), DEC);
-  logFile.print(",");
-  logFile.print(dataToLog);
+    // Open the log file
+    File logFile = SD.open("events.csv", FILE_WRITE);
+    if (!logFile) {
+      Serial.print("Couldn't create log file");
+      abort;
+    }
 
-  // End the line with a return character.
-  logFile.println();
-  logFile.close();
-  Serial.print("Event Logged: ");
-  Serial.print(rightNow.year(), DEC);
-  Serial.print(",");
-  Serial.print(rightNow.month(), DEC);
-  Serial.print(",");
-  Serial.print(rightNow.day(), DEC);
-  Serial.print(",");
-  Serial.print(rightNow.hour(), DEC);
-  Serial.print(",");
-  Serial.print(rightNow.minute(), DEC);
-  Serial.print(",");
-  Serial.print(rightNow.second(), DEC);
-  Serial.print(",");
-  Serial.println(dataToLog);
+    // Log the event with the date, time and data
+    logFile.print(rightNow.year(), DEC);
+    logFile.print(",");
+    logFile.print(rightNow.month(), DEC);
+    logFile.print(",");
+    logFile.print(rightNow.day(), DEC);
+    logFile.print(",");
+    logFile.print(rightNow.hour(), DEC);
+    logFile.print(",");
+    logFile.print(rightNow.minute(), DEC);
+    logFile.print(",");
+    logFile.print(rightNow.second(), DEC);
+    logFile.print(",");
+    logFile.print(dataToLog);
+
+    // End the line with a return character.
+    logFile.println();
+    logFile.close();
+    Serial.print("Event Logged: ");
+    Serial.print(rightNow.year(), DEC);
+    Serial.print(",");
+    Serial.print(rightNow.month(), DEC);
+    Serial.print(",");
+    Serial.print(rightNow.day(), DEC);
+    Serial.print(",");
+    Serial.print(rightNow.hour(), DEC);
+    Serial.print(",");
+    Serial.print(rightNow.minute(), DEC);
+    Serial.print(",");
+    Serial.print(rightNow.second(), DEC);
+    Serial.print(",");
+    Serial.println(dataToLog);
+    if (PrevEventID == 1) {
+      PrevEvent1 = dataToLog;
+      PrevEventID = 2;
+    }
+    else {
+      PrevEvent2 = dataToLog;
+      PrevEventID = 1;
+    }
+   logFile.flush();
+   logFile.close();
+  }
 }
 
 /*
@@ -188,7 +206,7 @@ boolean Read_distance() {
    @return null
 */
 void stateHandeler() {
-  if (1 == 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
+  if (1 != 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
     disarmedState();
   }
   else {
@@ -223,10 +241,12 @@ void armedState() {
     tone(buzzer, 700);
     digitalWrite(redLED, LOW);
     delay(25);
+    logEvent("Alarm Went off");
   }
   else {
     noTone(buzzer);
     digitalWrite(redLED, LOW);
+    logEvent("Alarm deactivated");
   }
 
 }
