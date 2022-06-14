@@ -45,7 +45,7 @@ const char *gpsStream =
   "$GPRMC,045200.000,A,3014.3820,N,09748.9514,W,36.88,65.02,030913,,,A*77\r\n"
   "$GPGGA,045201.000,3014.3864,N,09748.9411,W,1,10,1.2,200.8,M,-22.5,M,,0000*6C\r\n"
   "$GPRMC,045251.000,A,3014.4275,N,09749.0626,W,0.51,217.94,030913,,,A*7D\r\n"
-  "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n"; \
+  "$GPGGA,045252.000,3014.4273,N,09749.0628,W,1,09,1.3,206.9,M,-22.5,M,,0000*6F\r\n";
 static const int RXPin = 10, TXPin = 11;
 static const uint32_t GPSBaud = 9600;
 boolean fanState = false;
@@ -53,14 +53,16 @@ int x = 1;
 int PrevEventID = 1;
 String PrevEvent1;
 String PrevEvent2;
+int gpsLat;
+int gpsLong;
 int homeLong = 0;
 int homeLat = 0;
 
 
-// The TinyGPS++ object
-TinyGPSPlus gps;
 // The serial connection to the GPS device
 SoftwareSerial ss(RXPin, TXPin);
+// The TinyGPS++ object
+TinyGPSPlus gps;
 L298N motor(mDrive1, mDrive2);
 
 
@@ -99,7 +101,7 @@ void setup() {
 
 void loop() {
   stateHandeler();
-  //getGPSInfo();
+  getGPSInfo();
   delay(50);
 }
 
@@ -214,7 +216,7 @@ void stateHandeler() {
   //  else {
   //    armedState();
   //  }
-  if (1 != 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
+  if (1 == 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
     disarmedState();
   }
   else {
@@ -353,12 +355,12 @@ void getGPSInfo() {
 
   Serial.println();
 
-  if (gpsLat == homeLat && gpsLong == homeLong) {
-    return (true);
-  }
-  else {
-    return (false);
-  }
+//  if (gpsLat == homeLat && gpsLong == homeLong) {
+//    return (true);
+//  }
+//  else {
+//    return (false);
+//  }
 }
 
 void LockController(boolean lock) {
