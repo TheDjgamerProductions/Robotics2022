@@ -101,7 +101,7 @@ void setup() {
 
 void loop() {
   stateHandeler();
-  getGPSInfo();
+  //getGPSInfo();
   delay(50);
 }
 
@@ -119,7 +119,7 @@ void logEvent(String dataToLog) {
   */
   // Get the updated/current time
   if (PrevEvent1 == dataToLog || PrevEvent2 == dataToLog) {
-    Serial.println("Dupe Data");
+    //Serial.println("Dupe Data");
   }
   else {
     DateTime rightNow = rtc.now();
@@ -272,9 +272,12 @@ void ledController() {
   Serial.println(ledLevel);
   int lineReadout = digitalRead(line);
   if (!lineReadout) {
+    //String temp = "LED on with brightness: " + String(ledLevel);
+    //logEvent(temp);
     analogWrite(YellLED, ledLevel);
   }
   else {
+    logEvent("LED off");
     digitalWrite(YellLED, LOW);
   }
 
@@ -366,10 +369,10 @@ void getGPSInfo() {
 void LockController(boolean lock) {
   if (lock) {
     servo.write(90);
-    logEvent("Locked");
+    logEvent("Door (Servo) Locked");
   }
   else {
     servo.write(0);
-    logEvent("Unlocked");
+    logEvent("Door (Servo) Unlocked");
   }
 }
