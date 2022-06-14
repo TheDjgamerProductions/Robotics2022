@@ -53,6 +53,8 @@ int x = 1;
 int PrevEventID = 1;
 String PrevEvent1;
 String PrevEvent2;
+int homeLong = 0;
+int homeLat = 0;
 
 
 // The TinyGPS++ object
@@ -167,8 +169,8 @@ void logEvent(String dataToLog) {
       PrevEvent2 = dataToLog;
       PrevEventID = 1;
     }
-   logFile.flush();
-   logFile.close();
+    logFile.flush();
+    logFile.close();
   }
 }
 
@@ -206,6 +208,12 @@ boolean Read_distance() {
    @return null
 */
 void stateHandeler() {
+  //  if (getGPSInfo()){
+  //    disarmedState();
+  //  }
+  //  else {
+  //    armedState();
+  //  }
   if (1 != 1) { //This code is used to see if the GPS is inside the house for now it is returning true all the time, this will change afer i get the GPS to work
     disarmedState();
   }
@@ -299,8 +307,10 @@ void getGPSInfo() {
   if (gps.location.isValid())
   {
     Serial.print(gps.location.lat(), 6);
+    gpsLat = (gps.location.lat(), 6);
     Serial.print(F(","));
     Serial.print(gps.location.lng(), 6);
+    gpsLong = (gps.location.lng(), 6);
   }
   else
   {
@@ -342,6 +352,13 @@ void getGPSInfo() {
   }
 
   Serial.println();
+
+  if (gpsLat == homeLat && gpsLong == homeLong) {
+    return (true);
+  }
+  else {
+    return (false);
+  }
 }
 
 void LockController(boolean lock) {
